@@ -2,69 +2,78 @@
 """Scrape products from a static e-commerce page using Selenium."""
 
 import time
-
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 
 
 def scrape_products_list(url):
-    """Scrape product information from a static product page.
+    """Scrape unique products from a static product category page.
 
     Args:
         url (str): URL of the product category page.
 
     Returns:
-        list: Product dictionaries containing title, price,
-        description, and rating.
+        list: A list of dictionaries containing product information.
     """
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
     options.add_argument("--window-size=1920,1080")
     options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(options=options)
+
     products = []
+    seen = set()
 
     try:
         driver.get(url)
         time.sleep(2)
 
         product_cards = driver.find_elements(
-            By.CSS_SELECTOR,
-            ".thumbnail"
+            "css selector",
+            "div.thumbnail"
         )
 
         for card in product_cards:
             title_element = card.find_element(
-                By.CSS_SELECTOR,
+                "css selector",
                 "a.title"
             )
+
             price_element = card.find_element(
-                By.CSS_SELECTOR,
+                "css selector",
                 "h4.price"
             )
+
             description_element = card.find_element(
-                By.CSS_SELECTOR,
+                "css selector",
                 "p.description"
             )
+
             rating_element = card.find_element(
-                By.CSS_SELECTOR,
+                "css selector",
                 ".ratings p[data-rating]"
             )
 
-            rating_value = rating_element.get_attribute(
-                "data-rating"
-            )
+            title = title_element.get_attribute("title")
+            price = price_element.text.strip()
+
+            product_key = (title, price)
+
+            if product_key in seen:
+                continue
+
+            seen.add(product_key)
 
             products.append({
-                "title": title_element.get_attribute("title"),
-                "price": price_element.text.strip(),
+                "title": title,
+                "price": price,
                 "description": description_element.text.strip(),
-                "rating": int(rating_value)
+                "rating": int(
+                    rating_element.get_attribute("data-rating")
+                )
             })
+
+        return products
 
     finally:
         driver.quit()
-
-    return products
