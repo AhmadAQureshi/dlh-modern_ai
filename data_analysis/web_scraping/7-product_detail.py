@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-"""Scrape the details of one product using Selenium."""
+"""Scrape details of a single product using Selenium."""
 
 import time
-
 from selenium import webdriver
 
 
 def scrape_product_detail(url, delay=2.0):
-    """Scrape product details from a product page.
+    """Scrape details from a single product page.
 
     Args:
         url (str): URL of the product detail page.
@@ -20,7 +19,6 @@ def scrape_product_detail(url, delay=2.0):
     options.add_argument("--headless")
     options.add_argument("--window-size=1920,1080")
     options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(options=options)
 
@@ -52,7 +50,7 @@ def scrape_product_detail(url, delay=2.0):
 
         stars = driver.find_elements(
             "css selector",
-            ".ratings p.ws-icon.ws-icon-star"
+            ".ratings .ws-icon-star"
         )
 
         return {
