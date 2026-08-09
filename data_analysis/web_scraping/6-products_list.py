@@ -5,14 +5,14 @@ import time
 from selenium import webdriver
 
 
-def scrape_products_list(url):
-    """Scrape unique products from a static product category page.
+def scrape_products(url):
+    """Scrape unique products from a static product page.
 
     Args:
         url (str): URL of the product category page.
 
     Returns:
-        list: A list of dictionaries containing product information.
+        list: A list of product dictionaries.
     """
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
@@ -20,7 +20,6 @@ def scrape_products_list(url):
     options.add_argument("--no-sandbox")
 
     driver = webdriver.Chrome(options=options)
-
     products = []
     seen = set()
 
@@ -28,12 +27,12 @@ def scrape_products_list(url):
         driver.get(url)
         time.sleep(2)
 
-        product_cards = driver.find_elements(
+        cards = driver.find_elements(
             "css selector",
             "div.thumbnail"
         )
 
-        for card in product_cards:
+        for card in cards:
             title_element = card.find_element(
                 "css selector",
                 "a.title"
@@ -57,12 +56,12 @@ def scrape_products_list(url):
             title = title_element.get_attribute("title")
             price = price_element.text.strip()
 
-            product_key = (title, price)
+            key = (title, price)
 
-            if product_key in seen:
+            if key in seen:
                 continue
 
-            seen.add(product_key)
+            seen.add(key)
 
             products.append({
                 "title": title,
@@ -77,3 +76,6 @@ def scrape_products_list(url):
 
     finally:
         driver.quit()
+
+
+scrape_products_list = scrape_products
