@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Plot the distribution of the Churn target variable.
+Plot churn distribution.
 """
 
 import matplotlib.pyplot as plt
@@ -8,23 +8,16 @@ import matplotlib.pyplot as plt
 
 def plot_churn_distribution(df):
     """
-    Plot the Churn class distribution.
+    Plot the distribution of Churn values.
     """
     plt.figure(figsize=(12, 8))
 
-    churn_counts = df["Churn"].value_counts()
+    counts = df["Churn"].value_counts().reindex(["No", "Yes"])
 
     plt.bar(
-        churn_counts.index,
-        churn_counts.values,
-        color=[
-            "skyblue" if value == "No" else "salmon"
-            for value in churn_counts.index
-        ]
+        counts.index,
+        counts.values,
+        color=["skyblue", "salmon"]
     )
-
-    plt.title("Churn Distribution")
-    plt.xlabel("Churn")
-    plt.ylabel("Count")
 
     plt.show()
