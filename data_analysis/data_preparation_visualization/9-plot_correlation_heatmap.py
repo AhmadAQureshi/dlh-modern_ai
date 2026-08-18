@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Plot correlation heatmap for continuous numerical features.
+Plot correlation heatmap for numerical features.
 """
 
 import seaborn as sns
@@ -9,14 +9,12 @@ import matplotlib.pyplot as plt
 
 def plot_correlation_heatmap(df):
     """
-    Visualize correlations between numerical features.
+    Plot an annotated correlation heatmap.
     """
     plt.figure(figsize=(6, 5))
 
-    # Select numerical columns and calculate correlations
-    correlation = df.select_dtypes(include="number").corr()
+    correlation = df.corr(numeric_only=True)
 
-    # Create annotated heatmap
     sns.heatmap(
         correlation,
         annot=True,
@@ -26,5 +24,4 @@ def plot_correlation_heatmap(df):
     )
 
     plt.title("Correlation Matrix")
-    plt.tight_layout()
     plt.show()
