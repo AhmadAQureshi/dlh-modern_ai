@@ -10,4 +10,4 @@ df.drop(columns=['gender', 'PhoneService'], inplace=True)
 df = create_features(df)
 df_enc, churn_le, binary_oe, tenure_oe = encode_features(df)
 
-print(df_enc.dtypes)    
+print(df_enc.dtypes)
