@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Module for retrieving the cost-complexity pruning path."""
 
+
 def get_pruning_path(clf, X, y):
     """
     Retrieve the cost-complexity pruning path of a decision tree.
