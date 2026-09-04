@@ -33,4 +33,4 @@ compile_model(model)
 
 epochs = 100
 log_dir = "logs/tensorboard_demo"
-log_to_tensorboard(log_dir, model, x_train, y_train, epochs, verbose=1) 
+log_to_tensorboard(log_dir, model, x_train, y_train, epochs, verbose=1)
